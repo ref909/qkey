@@ -51,26 +51,39 @@
 }
 
 @theme {
+  --color-paper: #0b0f12;
+  --color-ink: #f2efe5;
+  --color-laser: #ff5a2f;
+  --color-laser-ink: #ff7a55;
+  --color-olive: #a9a79b;
+  --color-rule: #2b3336;
+  --color-panel: #05080a;
+  --color-panel-cell: #0d1418;
+  --color-panel-lit: #141b1e;
+  --color-panel-line: #2b3336;
+  --color-panel-muted: #a9a79b;
+  --color-cream: #f2efe5;
+  --color-on-laser: #0b0f12;
+  --font-sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-mono: "Spline Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+html[data-theme="light"] {
   --color-paper: #f1eee5;
   --color-ink: #101315;
   --color-laser: #e8451f;
   --color-laser-ink: #c43a18;
   --color-olive: #6c6d63;
   --color-rule: #d2ccbe;
-  --color-panel: #0a0f12;
-  --color-panel-cell: #0d1418;
-  --color-panel-lit: #141b1e;
-  --color-panel-line: #2b3336;
-  --color-panel-muted: #a9a79b;
-  --color-cream: #f2efe5;
-  --font-sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-mono: "Spline Mono", "SFMono-Regular", Consolas, monospace;
+  --color-on-laser: #101315;
+  color-scheme: light;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
     -webkit-text-size-adjust: 100%;
     scrollbar-color: var(--color-ink) var(--color-paper);
     scrollbar-width: thin;
@@ -86,7 +99,7 @@
   }
   ::selection {
     background: var(--color-laser);
-    color: var(--color-ink);
+    color: var(--color-on-laser);
   }
   :focus-visible {
     outline: 2px solid var(--color-laser);

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import type { Variants } from "motion/react";
 import HandshakeDemo from "./components/HandshakeDemo";
@@ -8,7 +8,7 @@ const container = "mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12";
 
 const navItems = [
   { label: "CHANNEL", href: "#channel" },
-  { label: "PROTOCOL", href: "#protocol" },
+  { label: "HOW IT WORKS", href: "#how-it-works" },
   { label: "THREAT", href: "#threat" },
   { label: "SPEC", href: "#spec" },
 ];
@@ -143,7 +143,7 @@ function SectionHead({
       <div className="border-t border-ink pt-4">
         <div className="grid gap-6 md:grid-cols-12 md:gap-0">
           <div className="flex items-start gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-olive md:col-span-2 md:flex-col md:gap-3">
-            <span className="bg-laser px-1.5 py-0.5 text-[11px] font-medium leading-none text-ink">
+            <span className="bg-laser px-1.5 py-0.5 text-[11px] font-medium leading-none text-on-laser">
               {index}
             </span>
             <span>{label}</span>
@@ -172,6 +172,15 @@ function SectionHead({
 
 export default function App() {
   const reduce = useReducedMotion();
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window === "undefined") return "dark";
+    return window.localStorage.getItem("qkey-theme") === "light" ? "light" : "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("qkey-theme", theme);
+  }, [theme]);
 
   const contractAddress =
     typeof import.meta.env.VITE_QKEY_CONTRACT === "string"
@@ -183,7 +192,7 @@ export default function App() {
     <div id="top" className="min-h-screen overflow-x-clip bg-paper text-ink">
       <a
         href="#main"
-        className="fixed left-0 top-0 z-50 -translate-y-full bg-ink px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em] text-cream focus:translate-y-0"
+        className="fixed left-0 top-0 z-50 -translate-y-full bg-ink px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em] text-paper focus:translate-y-0"
       >
         Skip to content
       </a>
@@ -223,9 +232,18 @@ export default function App() {
               />
               BB84 / CHANNEL 0.1
             </span>
+            <button
+              type="button"
+              onClick={() => setTheme((value) => (value === "dark" ? "light" : "dark"))}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              aria-pressed={theme === "light"}
+              className="border border-rule px-2 py-2.5 font-mono text-[8px] uppercase tracking-[0.1em] text-olive transition-colors hover:border-ink hover:text-ink sm:px-2.5 sm:text-[9px]"
+            >
+              {theme === "dark" ? "LIGHT" : "DARK"}
+            </button>
             <a
               href="#channel"
-              className="inline-flex items-center gap-2 whitespace-nowrap bg-ink px-3 py-2.5 font-mono text-[9px] uppercase tracking-[0.1em] text-cream transition-colors hover:bg-laser hover:text-ink sm:px-4 sm:text-[10px]"
+              className="inline-flex items-center gap-2 whitespace-nowrap bg-ink px-3 py-2.5 font-mono text-[9px] uppercase tracking-[0.1em] text-paper transition-colors hover:bg-laser hover:text-on-laser sm:px-4 sm:text-[10px]"
             >
               RUN HANDSHAKE
               <span aria-hidden="true">→</span>
@@ -294,15 +312,18 @@ export default function App() {
                   transition={{ duration: 0.7, delay: 0.42, ease: "easeOut" }}
                 >
                   <p className="mt-7 max-w-[54ch] text-[17px] leading-[1.55] text-ink sm:text-lg">
-                    Q/KEY is a BB84 key-distribution channel for agent-to-agent
-                    channels. Interception disturbs the quantum state; Q/KEY
-                    detects it and aborts.
+                    A private line for AI agents. Two machines agree on a secret
+                    key — and if anyone listens in, the line knows.
+                  </p>
+                  <p className="mt-4 max-w-[58ch] font-mono text-[9px] uppercase leading-[1.7] tracking-[0.08em] text-olive sm:text-[10px]">
+                    Under the hood: BB84 key distribution / 48-qubit frames /
+                    11% QBER abort / AES-256-GCM.
                   </p>
 
                   <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-5">
                     <a
                       href="#channel"
-                      className="group inline-flex items-center justify-center gap-3 border border-ink bg-ink px-5 py-4 font-mono text-[10px] uppercase tracking-[0.1em] text-cream transition-colors hover:border-laser hover:bg-laser hover:text-ink sm:text-[11px]"
+                      className="group inline-flex items-center justify-center gap-3 border border-ink bg-ink px-5 py-4 font-mono text-[10px] uppercase tracking-[0.1em] text-paper transition-colors hover:border-laser hover:bg-laser hover:text-on-laser sm:text-[11px]"
                     >
                       RUN HANDSHAKE
                       <span
@@ -378,6 +399,69 @@ export default function App() {
         </section>
 
         <section
+          id="how-it-works"
+          aria-labelledby="plain-title"
+          className="scroll-mt-[104px] border-b border-rule md:scroll-mt-[68px]"
+        >
+          <div className={`${container} py-14 sm:py-20`}>
+            <Reveal>
+              <div className="grid gap-8 md:grid-cols-12 md:gap-0">
+                <div className="flex items-start gap-3 font-mono text-[9px] uppercase tracking-[0.14em] text-olive sm:text-[10px] md:col-span-3 md:flex-col md:gap-4">
+                  <span className="bg-laser px-1.5 py-0.5 text-[11px] font-medium leading-none text-on-laser">
+                    00
+                  </span>
+                  <span>IN PLAIN TERMS</span>
+                </div>
+
+                <div className="min-w-0 md:col-span-9 md:border-l md:border-rule md:pl-8 lg:pl-12">
+                  <h2
+                    id="plain-title"
+                    className="max-w-[20ch] font-display text-[clamp(2.4rem,4.8vw,4.6rem)] font-normal leading-[0.94] tracking-[-0.02em] text-ink"
+                  >
+                    A private channel, <em className="italic">with a tripwire.</em>
+                  </h2>
+                  <p className="mt-5 max-w-[62ch] text-[15px] leading-[1.6] text-ink/80 sm:text-base">
+                    Two agents do not send a key through the open internet. They
+                    build one together, then check whether anyone touched the
+                    line.
+                  </p>
+
+                  <div className="mt-9 grid gap-7 border-t border-ink pt-5 sm:grid-cols-3 sm:gap-8">
+                    <div>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-laser-ink sm:text-[10px]">
+                        01 / AGREE
+                      </span>
+                      <p className="mt-3 text-[13px] leading-[1.55] text-ink/80 sm:text-sm">
+                        Exchange photons. Keep only the bits where both sides
+                        used the same basis.
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-laser-ink sm:text-[10px]">
+                        02 / CHECK
+                      </span>
+                      <p className="mt-3 text-[13px] leading-[1.55] text-ink/80 sm:text-sm">
+                        Compare a sample. An eavesdropper cannot copy a photon
+                        without leaving errors.
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-laser-ink sm:text-[10px]">
+                        03 / USE
+                      </span>
+                      <p className="mt-3 text-[13px] leading-[1.55] text-ink/80 sm:text-sm">
+                        If the line is clean, both sides derive the same key and
+                        encrypt the payload.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section
           id="channel"
           aria-labelledby="channel-title"
           className="scroll-mt-[104px] border-b border-rule md:scroll-mt-[68px]"
@@ -434,7 +518,7 @@ export default function App() {
                     className="flex min-w-0 flex-col border-t border-rule px-0 py-7 first:border-t-ink sm:border-r sm:border-t-ink sm:px-6 sm:even:border-r-0 sm:first:pl-0 lg:border-l lg:border-r-0 lg:border-rule lg:px-8 lg:first:border-l-0 lg:first:pl-0"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="bg-laser px-1.5 py-0.5 font-mono text-[11px] font-medium leading-none text-ink">
+                      <span className="bg-laser px-1.5 py-0.5 font-mono text-[11px] font-medium leading-none text-on-laser">
                         {step.number}
                       </span>
                       <span aria-hidden="true" className="h-px flex-1 bg-rule" />
@@ -499,7 +583,7 @@ export default function App() {
                     <p className="text-[14px] leading-[1.6] text-ink sm:text-[15px]">
                       <span
                         aria-hidden="true"
-                        className="mr-2 inline-grid h-[18px] w-[18px] place-items-center bg-laser align-[1px] font-mono text-[11px] text-ink"
+                        className="mr-2 inline-grid h-[18px] w-[18px] place-items-center bg-laser align-[1px] font-mono text-[11px] text-on-laser"
                       >
                         !
                       </span>
