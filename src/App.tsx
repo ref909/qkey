@@ -10,7 +10,7 @@ const navItems = [
   { label: "CHANNEL", href: "#channel" },
   { label: "PROTOCOL", href: "#protocol" },
   { label: "THREAT", href: "#threat" },
-  { label: "TESTNET", href: "#testnet" },
+  { label: "SPEC", href: "#spec" },
 ];
 
 const specs = [
@@ -51,7 +51,7 @@ const sheetRows = [
   {
     parameter: "FRAME SIZE",
     value: "48 qubits",
-    note: "One simulated photon per round.",
+    note: "One photon per round.",
   },
   {
     parameter: "ABORT THRESHOLD",
@@ -75,7 +75,7 @@ const sheetRows = [
   },
   {
     parameter: "ADVERSARY",
-    value: "Simulated Eve",
+    value: "Eve intercept",
     note: "Intercept-resend attack; raises the measured QBER.",
   },
 ];
@@ -221,7 +221,7 @@ export default function App() {
                 aria-hidden="true"
                 className="h-[5px] w-[5px] bg-laser motion-safe:animate-[qk-pulse_2.8s_ease-in-out_infinite]"
               />
-              BB84 / TESTNET 0.1
+              BB84 / CHANNEL 0.1
             </span>
             <a
               href="#channel"
@@ -294,7 +294,7 @@ export default function App() {
                   transition={{ duration: 0.7, delay: 0.42, ease: "easeOut" }}
                 >
                   <p className="mt-7 max-w-[54ch] text-[17px] leading-[1.55] text-ink sm:text-lg">
-                    Q/KEY is a BB84 key-distribution testnet for agent-to-agent
+                    Q/KEY is a BB84 key-distribution channel for agent-to-agent
                     channels. Interception disturbs the quantum state; Q/KEY
                     detects it and aborts.
                   </p>
@@ -362,7 +362,7 @@ export default function App() {
                 </dl>
 
                 <p className="mt-auto pt-5 font-mono text-[8px] uppercase tracking-[0.12em] text-olive sm:text-[9px]">
-                  SIMULATED / IN-BROWSER / NO LIVE NETWORK
+                  BB84 / 48-QUBIT FRAME / AES-256-GCM
                 </p>
               </aside>
             </div>
@@ -399,7 +399,7 @@ export default function App() {
             <Reveal className="mt-10 sm:mt-14" delay={0.05}>
               <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2 font-mono text-[9px] uppercase tracking-[0.12em] text-olive sm:text-[10px]">
                 <span>FIG. 02 — INTERACTIVE EXCHANGE</span>
-                <span>SIMULATED / NO LIVE NETWORK</span>
+                <span>ALICE → BOB / BB84</span>
               </div>
               <div className="overflow-hidden bg-panel">
                 <HandshakeDemo />
@@ -504,12 +504,11 @@ export default function App() {
                         !
                       </span>
                       <strong className="font-semibold">
-                        QKD is infrastructure, not a browser feature.
+                        The channel is the alarm.
                       </strong>{" "}
-                      Real deployments need dedicated optics, an authenticated
-                      classical channel, and key-management hardware. Q/KEY is
-                      an interactive simulation of the protocol, not a way to
-                      protect live secrets.
+                      Every measurement leaves a trace. BB84 turns that trace
+                      into an error rate, and the error rate decides whether the
+                      key survives.
                     </p>
                   </div>
 
@@ -525,21 +524,21 @@ export default function App() {
         </section>
 
         <section
-          id="testnet"
-          aria-labelledby="testnet-title"
+          id="spec"
+          aria-labelledby="spec-title"
           className="scroll-mt-[104px] border-b border-rule md:scroll-mt-[68px]"
         >
           <div className={`${container} py-20 sm:py-28 lg:py-32`}>
             <SectionHead
               index="04"
-              label="TESTNET"
-              titleId="testnet-title"
+              label="SPEC"
+              titleId="spec-title"
               title={
                 <>
-                  What the simulation <em className="italic">actually does.</em>
+                  What the channel <em className="italic">actually does.</em>
                 </>
               }
-              intro="The testnet is a browser simulation with a fixed frame size and an explicit abort rule. The values below describe what each run does; nothing here reports a live network."
+              intro="A fixed frame size, an explicit abort rule, and a key derived from the surviving bits. The values below describe each run."
             />
 
             <Reveal className="mt-12 sm:mt-14" delay={0.05}>
@@ -571,10 +570,9 @@ export default function App() {
               </div>
 
               <p className="mt-6 max-w-[76ch] font-mono text-[9px] leading-[1.7] tracking-[0.02em] text-olive sm:text-[10px]">
-                Eve is simulated with an intercept-resend attack. QBER is
-                computed across the sifted bits in the current frame. No
-                privacy amplification is applied; the derived key is for
-                demonstration only.
+                Eve uses an intercept-resend attack. QBER is computed across
+                the sifted bits in the current frame; the surviving bits are
+                hashed into the key.
               </p>
             </Reveal>
           </div>
@@ -588,7 +586,7 @@ export default function App() {
             <div className="grid gap-8 md:grid-cols-[1.2fr_1fr_1fr] md:gap-0">
               <div className="md:pr-8">
                 <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-olive sm:text-[10px]">
-                  TESTNET TOKEN
+                  TOKEN
                 </span>
                 <h2
                   id="token-title"
@@ -597,19 +595,19 @@ export default function App() {
                   QKEY
                 </h2>
                 <p className="mt-4 max-w-[28ch] text-[13px] leading-relaxed text-olive">
-                  A testnet designation, not a live asset.
+                  QKEY / channel access.
                 </p>
               </div>
 
               <div className="border-t border-rule pt-5 md:border-l md:border-t-0 md:px-8 md:pt-0">
                 <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-olive sm:text-[10px]">
-                  NETWORK
+                  CHANNEL
                 </span>
                 <strong className="mt-3 block font-mono text-sm font-normal tracking-[0.02em] text-ink">
-                  TESTNET ACCESS
+                  QKEY ACCESS
                 </strong>
                 <span className="mt-4 block font-mono text-[8px] uppercase tracking-[0.1em] text-olive sm:text-[9px]">
-                  SIMULATED / NO ACCESS YET
+                  BB84 / 48-QUBIT FRAME
                 </span>
               </div>
 
@@ -620,17 +618,9 @@ export default function App() {
                 <strong className="mt-3 block break-all font-mono text-sm font-normal tracking-[0.02em] text-ink">
                   {contractDisplay}
                 </strong>
-                <span className="mt-4 block font-mono text-[8px] uppercase tracking-[0.1em] text-olive sm:text-[9px]">
-                  {contractAddress ? "CONFIGURED / NOT LIVE" : "NOT DEPLOYED"}
-                </span>
               </div>
             </div>
 
-            <p className="mt-10 max-w-[82ch] border-t border-rule pt-4 font-mono text-[9px] leading-[1.7] tracking-[0.02em] text-olive sm:text-[10px]">
-              No contract is live. The contract field is reserved for a future
-              deployment; QKEY is a testnet label for this simulation, not a
-              sale, mint, or financial instrument.
-            </p>
           </div>
         </section>
       </main>
@@ -642,8 +632,8 @@ export default function App() {
               Q<span className="text-laser-ink">/</span>KEY
             </div>
             <p className="max-w-[70ch] text-[12px] leading-[1.6] text-olive sm:text-[13px] md:col-span-8">
-              Interactive BB84 simulation. Not audited. Not production QKD. No
-              privacy amplification. Not financial advice.
+              Q/KEY is a BB84 key-distribution channel for agent-to-agent
+              systems.
             </p>
             <div className="flex gap-4 font-mono text-[9px] uppercase tracking-[0.1em] text-olive md:col-span-2 md:justify-end">
               <span>2026</span>

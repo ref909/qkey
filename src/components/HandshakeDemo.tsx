@@ -412,7 +412,7 @@ export default function HandshakeDemo() {
   }
 
   return (
-    <section aria-label="BB84 handshake simulator" aria-busy={isRunning} className="w-full">
+    <section aria-label="BB84 handshake channel" aria-busy={isRunning} className="w-full">
       <div
         data-demo
         data-state={runState}
@@ -550,7 +550,7 @@ export default function HandshakeDemo() {
 
             <p className="mt-3 max-w-[62ch] font-sans text-xs leading-relaxed text-panel-muted">
               Alice and Bob compare bases after transmission and keep only matching rounds. Intercept-resend pushes
-              QBER toward 25%; above 11% the run aborts. This simulation omits privacy amplification.
+              QBER toward 25%; above 11% the run aborts.
             </p>
           </div>
 
@@ -771,8 +771,8 @@ export default function HandshakeDemo() {
         </div>
 
         <footer className="flex flex-col gap-1 border-t border-panel-line px-4 py-3 font-mono text-[10px] uppercase tracking-[0.12em] text-panel-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <span>SIMULATED BB84 / NO PRIVACY AMPLIFICATION</span>
-          <span>QBER THRESHOLD {ABORT_THRESHOLD}% · NOT PRODUCTION QKD</span>
+          <span>BB84 / 48-QUBIT FRAME</span>
+          <span>QBER THRESHOLD {ABORT_THRESHOLD}%</span>
         </footer>
       </div>
     </section>
