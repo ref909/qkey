@@ -182,11 +182,32 @@ export default function App() {
     window.localStorage.setItem("qkey-theme", theme);
   }, [theme]);
 
+  const defaultContract = "HBRrAw416QsRiUMdSWAix9FD7hegiXovzdS5FCMjpump";
   const contractAddress =
-    typeof import.meta.env.VITE_QKEY_CONTRACT === "string"
+    typeof import.meta.env.VITE_QKEY_CONTRACT === "string" && import.meta.env.VITE_QKEY_CONTRACT.trim()
       ? import.meta.env.VITE_QKEY_CONTRACT.trim()
-      : "";
-  const contractDisplay = contractAddress || "TBA";
+      : defaultContract;
+  const [copied, setCopied] = useState(false);
+
+  async function copyContract() {
+    try {
+      await navigator.clipboard.writeText(contractAddress);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      const field = document.createElement("textarea");
+      field.value = contractAddress;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      document.execCommand("copy");
+      document.body.removeChild(field);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    }
+  }
 
   return (
     <div id="top" className="min-h-screen overflow-x-clip bg-paper text-ink">
@@ -196,6 +217,36 @@ export default function App() {
       >
         Skip to content
       </a>
+
+      <div className="border-b border-rule bg-ink text-paper">
+        <div className={`${container} flex min-h-9 items-center gap-2 py-1.5 sm:gap-3`}>
+          <span className="hidden font-mono text-[8px] uppercase tracking-[0.14em] text-paper/60 sm:inline">
+            CA
+          </span>
+          <code
+            className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap font-mono text-[8px] tracking-[0.02em] text-paper sm:text-[10px]"
+            title={contractAddress}
+          >
+            {contractAddress}
+          </code>
+          <button
+            type="button"
+            onClick={copyContract}
+            className="shrink-0 border border-paper/25 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-paper transition-colors hover:border-laser hover:bg-laser hover:text-on-laser sm:text-[9px]"
+            aria-live="polite"
+          >
+            {copied ? "COPIED" : "COPY"}
+          </button>
+          <a
+            href={`https://pump.fun/coin/${contractAddress}`}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="shrink-0 border border-paper/25 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-paper transition-colors hover:border-laser hover:bg-laser hover:text-on-laser sm:text-[9px]"
+          >
+            TRADE <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
 
       <header className="sticky top-0 z-40 border-b border-rule bg-paper">
         <div
@@ -700,7 +751,7 @@ export default function App() {
                   CONTRACT
                 </span>
                 <strong className="mt-3 block break-all font-mono text-sm font-normal tracking-[0.02em] text-ink">
-                  {contractDisplay}
+                  {contractAddress}
                 </strong>
               </div>
             </div>
